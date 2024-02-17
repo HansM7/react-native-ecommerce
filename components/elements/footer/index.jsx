@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   StyleSheet,
@@ -8,10 +9,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-function FooterComponent({ page, setPage }) {
-  console.log(page);
-  function handlePress(newPage) {
-    setPage(newPage);
+function FooterComponent({ screen }) {
+  const navigation = useNavigation();
+
+  function handlePress(name) {
+    navigation.navigate(name);
   }
 
   return (
@@ -21,40 +23,53 @@ function FooterComponent({ page, setPage }) {
           onPress={() => handlePress("home")}
           style={[
             styles.element_icon,
-            { backgroundColor: page === "home" ? "black" : "white" },
+            { backgroundColor: screen === "home" ? "black" : "white" },
           ]}
         >
           <Image
             source={
-              page === "home"
+              screen === "home"
                 ? require("../../../assets/icons/home_white.png")
                 : require("../../../assets/icons/home_black.png")
             }
             style={[styles.icon]}
           />
         </TouchableOpacity>
+        {/*  */}
         <TouchableOpacity
-          onPress={() => handlePress("shop")}
+          onPress={() => handlePress("cart")}
           style={[
             styles.element_icon,
-            { backgroundColor: page === "shop" ? "black" : "white" },
+            { backgroundColor: screen === "cart" ? "black" : "white" },
           ]}
         >
           <Image
             source={
-              page === "home"
+              screen === "cart"
                 ? require("../../../assets/icons/shop_white.png")
                 : require("../../../assets/icons/shop_black.png")
             }
             style={styles.icon}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.element_icon}>
+        {/*  */}
+        <TouchableOpacity
+          onPress={() => handlePress("notification")}
+          style={[
+            styles.element_icon,
+            { backgroundColor: screen === "notification" ? "black" : "white" },
+          ]}
+        >
           <Image
-            source={require("../../../assets/icons/notification_black.png")}
+            source={
+              screen === "notification"
+                ? require("../../../assets/icons/notification_white.png")
+                : require("../../../assets/icons/notification_black.png")
+            }
             style={styles.icon}
           />
         </TouchableOpacity>
+        {/*  */}
         <TouchableOpacity style={styles.element_icon}>
           <Image
             source={require("../../../assets/icons/profile_black.png")}

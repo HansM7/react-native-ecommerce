@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   View,
@@ -5,17 +6,28 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  Alert,
 } from "react-native";
 
-function Form({ handleLogin, setPage }) {
+function Form() {
+  const navigation = useNavigation();
+
   const [dataForm, setDataForm] = useState({
     email: "",
     password: "",
   });
 
   function handleClick() {
-    setPage("home");
-    handleLogin(dataForm);
+    if (dataForm.email === "admin@gmail.com" && dataForm.password === "admin") {
+      navigation.replace("home");
+    } else {
+      // lanzar error
+      Alert.alert(
+        "Error",
+        "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+        [{ text: "OK" }]
+      );
+    }
   }
 
   return (

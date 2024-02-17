@@ -1,25 +1,13 @@
 import React from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Banner from "./banner";
 import Form from "./form";
 
-function LoginScreen({ setPage }) {
-  function handleLogin(info) {
-    if (info.email === "admin@gmail.com" && info.password === "admin") {
-      setPage("home");
-    } else {
-      // lanzar error
-      Alert.alert(
-        "Error",
-        "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
-        [{ text: "OK" }]
-      );
-    }
-  }
+function LoginScreen() {
   return (
     <View style={styles.container_login}>
       <Banner></Banner>
-      <Form handleLogin={handleLogin} setPage={setPage}></Form>
+      <Form></Form>
     </View>
   );
 }
