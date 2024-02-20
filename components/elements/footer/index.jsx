@@ -70,9 +70,19 @@ function FooterComponent({ screen }) {
           />
         </TouchableOpacity>
         {/*  */}
-        <TouchableOpacity style={styles.element_icon}>
+        <TouchableOpacity
+          onPress={() => handlePress("profile")}
+          style={[
+            styles.element_icon,
+            { backgroundColor: screen === "profile" ? "black" : "white" },
+          ]}
+        >
           <Image
-            source={require("../../../assets/icons/profile_black.png")}
+            source={
+              screen === "profile"
+                ? require("../../../assets/icons/profile_white.png")
+                : require("../../../assets/icons/profile_black.png")
+            }
             style={styles.icon}
           />
         </TouchableOpacity>

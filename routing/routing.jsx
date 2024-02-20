@@ -6,13 +6,22 @@ import CardScreen from "../components/screens/card";
 import NotificationScreen from "../components/screens/notification";
 import ProductsScreen from "../components/screens/products";
 import ProductSreen from "../components/screens/detail";
+import HeaderComponent from "../components/header";
+import ProfileScreen from "../components/screens/profile";
 
 const stack = createStackNavigator();
 
 function Routing() {
   return (
     <NavigationContainer>
-      <stack.Navigator initialRouteName="login">
+      <stack.Navigator
+        initialRouteName="login"
+        screenOptions={({ route }) => ({
+          header: () => {
+            return <HeaderComponent />;
+          },
+        })}
+      >
         <stack.Screen
           name="login"
           component={LoginScreen}
@@ -35,6 +44,8 @@ function Routing() {
         <stack.Screen name="products" component={ProductsScreen}></stack.Screen>
 
         <stack.Screen name="product" component={ProductSreen}></stack.Screen>
+
+        <stack.Screen name="profile" component={ProfileScreen}></stack.Screen>
       </stack.Navigator>
     </NavigationContainer>
   );

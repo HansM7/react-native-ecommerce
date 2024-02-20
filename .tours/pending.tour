@@ -1,0 +1,11 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "pending",
+  "steps": [
+    {
+      "file": "components/screens/profile/index.jsx",
+      "description": "Add profile",
+      "line": 1
+    }
+  ]
+}

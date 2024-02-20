@@ -13,6 +13,26 @@ function ProductSreen() {
     initialDataProducts.filter((i) => i.id === product_id)
   );
 
+  const priceBase = 100;
+  const [ammount, setAmmount] = useState(1);
+  function handleIncrement() {
+    setAmmount(ammount + 1);
+  }
+  function handleDecrement() {
+    if (ammount !== 1) setAmmount(ammount - 1);
+  }
+
+  // sizes--------
+  const sizes = ["S", "M", "L", "XL"];
+
+  const [size, setSize] = useState("S");
+
+  function handleChangeSize(newSise) {
+    setSize(newSise);
+  }
+
+  const colors = ["y", "b", "v", "bl"];
+
   return (
     <View style={styles.container_abs}>
       <View style={styles.container_product}>
@@ -40,11 +60,11 @@ function ProductSreen() {
             </View>
             <View style={styles.first_content_right}>
               <View style={styles.content_ammount}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleDecrement}>
                   <Text style={styles.text_ammount}>-</Text>
                 </TouchableOpacity>
-                <Text style={styles.text_ammount}>5</Text>
-                <TouchableOpacity>
+                <Text style={styles.text_ammount}>{ammount}</Text>
+                <TouchableOpacity onPress={handleIncrement}>
                   <Text style={styles.text_ammount}>+</Text>
                 </TouchableOpacity>
               </View>
@@ -56,18 +76,26 @@ function ProductSreen() {
             <View style={styles.size_content}>
               <Text style={styles.text_size}>Size</Text>
               <View style={styles.option_size}>
-                <View style={styles.item_size}>
-                  <Text style={styles.text_item_size}>S</Text>
-                </View>
-                <View style={styles.item_size}>
-                  <Text style={styles.text_item_size}>M</Text>
-                </View>
-                <View style={styles.item_size}>
-                  <Text style={styles.text_item_size}>L</Text>
-                </View>
-                <View style={styles.item_size}>
-                  <Text style={styles.text_item_size}>XL</Text>
-                </View>
+                {sizes.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleChangeSize(item)}
+                    style={[
+                      styles.item_size,
+                      { backgroundColor: size === item ? "white" : "black" },
+                      { borderColor: size === item ? "black" : "white" },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.text_item_size,
+                        { color: size === item ? "black" : "white" },
+                      ]}
+                    >
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
             <View style={styles.color_content}>
@@ -88,12 +116,15 @@ function ProductSreen() {
             <View style={styles.final_cotent}>
               <View style={styles.final_price}>
                 <Text style={styles.price_title}>Total price</Text>
-                <Text style={styles.price_ammount}>$2000.00</Text>
+                <Text style={styles.price_ammount}>
+                  ${priceBase * ammount}.00
+                </Text>
               </View>
               <View>
                 <TouchableOpacity style={styles.button_add}>
                   <Image
-                    source={require("../../../assets/icons/profile_black.png")}
+                    style={[{ width: 30, height: 20 }]}
+                    source={require("../../../assets/icons/icon_shop_white.png")}
                     // style={styles.icon}
                   />
                   <Text style={styles.text_button_add}>Add to card</Text>
@@ -103,7 +134,6 @@ function ProductSreen() {
           </View>
         </View>
       </View>
-      {/* <FooterComponent screen={screen}></FooterComponent> */}
     </View>
   );
 }
@@ -219,6 +249,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     justifyContent: "center",
+    borderWidth: 1,
   },
   text_item_size: {
     textAlign: "center",
@@ -270,7 +301,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   title_description: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
   },
   content_description: {
@@ -294,12 +325,13 @@ const styles = StyleSheet.create({
   },
 
   button_add: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderRadius: 20,
     backgroundColor: "black",
     flexDirection: "row",
     alignItems: "center",
+    gap: 4,
   },
   text_button_add: {
     color: "white",
