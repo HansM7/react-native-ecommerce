@@ -36,7 +36,7 @@ function ProductsScreen() {
         <ProductSearch handleSearch={handleSearch}></ProductSearch>
         <ProductList dataProduct={dataTemporal}></ProductList>
       </View>
-      <FooterComponent screen={screen}></FooterComponent>
+      {/* <FooterComponent screen={screen}></FooterComponent> */}
     </View>
   );
 }

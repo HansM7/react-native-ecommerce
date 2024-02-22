@@ -47,7 +47,7 @@ function NotificationScreen() {
           )}
         ></FlatList>
       </View>
-      <FooterComponent screen={screen}></FooterComponent>
+      {/* <FooterComponent screen={screen}></FooterComponent> */}
     </View>
   );
 }
@@ -55,22 +55,24 @@ function NotificationScreen() {
 const styles = StyleSheet.create({
   container_abs: {
     width: "100%",
+    height: "100%",
   },
   container_card: {
     position: "relative",
     paddingHorizontal: 20,
     width: "100%",
-    marginBottom: 50,
+    // marginBottom: 600,
     flexDirection: "column",
     minHeight: "100%",
     height: "100%",
-    paddingBottom: 150,
+    // marginBottom: 50,
   },
   content_notifications: {
     width: "100%",
     flexDirection: "column",
     paddingTop: 20,
     paddingHorizontal: 10,
+    marginBottom: 20,
   },
   notification: {
     width: "100%",

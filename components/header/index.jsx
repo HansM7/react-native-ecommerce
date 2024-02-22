@@ -3,14 +3,20 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 function HeaderComponent() {
   const navigation = useNavigation();
+
   const route = useRoute();
+
   const screen = route.name;
+
   if (screen !== "login") {
     return (
       <View style={styles.header}>
         <View>
           {screen !== "home" ? (
-            <TouchableOpacity onPress={navigation.goBack}>
+            <TouchableOpacity
+              onPress={navigation.goBack}
+              style={styles.content_icon}
+            >
               <Image
                 source={require("../../assets/icons/back.png")}
                 style={styles.icon}
@@ -23,7 +29,7 @@ function HeaderComponent() {
         <View>
           <Text style={styles.text_screen}>{screen}</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity style={styles.content_icon}>
           <Image
             source={require("../../assets/icons/settings.png")}
             style={styles.icon}
@@ -57,9 +63,15 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   icon: {
-    width: 30,
-    height: 30,
-    opacity: 0.7,
+    width: 25,
+    height: 25,
+    // opacity: 0.7,
+    tintColor: "white",
+  },
+  content_icon: {
+    backgroundColor: "black",
+    padding: 8,
+    borderRadius: 25,
   },
 });
 

@@ -36,6 +36,7 @@ function Form() {
         <Text style={styles.label_text}>Email</Text>
         <TextInput
           onChangeText={(value) => setDataForm({ ...dataForm, email: value })}
+          defaultValue="admin@gmail.com"
           keyboardType="email-address"
           style={styles.input_text}
         ></TextInput>
