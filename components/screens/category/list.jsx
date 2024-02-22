@@ -48,12 +48,13 @@ const styles = StyleSheet.create({
   container_list: {
     marginTop: 30,
     maxHeight: "90%",
-    paddingBottom: 200,
+    // paddingBottom: 200,
   },
   element_list: {
     width: "100%",
     height: "100%",
     gap: 100,
+    marginBottom: 100,
   },
   card_category: {
     margin: 10,

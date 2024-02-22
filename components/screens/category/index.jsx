@@ -29,7 +29,7 @@ function CategoryScreen() {
         <CategorySearch handleSearch={handleSearch}></CategorySearch>
         <CategoryList dataCategory={dataTemporal}></CategoryList>
       </View>
-      <FooterComponent screen={screen}></FooterComponent>
+      {/* <FooterComponent screen={screen}></FooterComponent> */}
     </View>
   );
 }
@@ -37,6 +37,7 @@ function CategoryScreen() {
 const styles = StyleSheet.create({
   container_abs: {
     width: "100%",
+    height: "100%",
   },
   container_category: {
     position: "relative",

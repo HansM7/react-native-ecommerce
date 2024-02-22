@@ -2,12 +2,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "../components/screens/login";
 import CategoryScreen from "../components/screens/category";
-import CardScreen from "../components/screens/card";
+import CardScreen from "../components/screens/cart";
 import NotificationScreen from "../components/screens/notification";
 import ProductsScreen from "../components/screens/products";
 import ProductSreen from "../components/screens/detail";
 import HeaderComponent from "../components/header";
 import ProfileScreen from "../components/screens/profile";
+import TabNavigation from "./tab_navigation";
 
 const stack = createStackNavigator();
 
@@ -30,22 +31,13 @@ function Routing() {
 
         <stack.Screen
           name="home"
-          component={CategoryScreen}
+          component={TabNavigation}
           // options={{ headerLeft: null }}
-        ></stack.Screen>
-
-        <stack.Screen name="cart" component={CardScreen}></stack.Screen>
-
-        <stack.Screen
-          name="notification"
-          component={NotificationScreen}
         ></stack.Screen>
 
         <stack.Screen name="products" component={ProductsScreen}></stack.Screen>
 
         <stack.Screen name="product" component={ProductSreen}></stack.Screen>
-
-        <stack.Screen name="profile" component={ProfileScreen}></stack.Screen>
       </stack.Navigator>
     </NavigationContainer>
   );
