@@ -38,12 +38,23 @@ function NotificationScreen() {
   return (
     <View style={styles.container_abs}>
       <View style={styles.container_card}>
+        <Text style={styles.text_promotion}>Promotions</Text>
         <FlatList
           style={styles.content_notifications}
           data={promotions}
           keyExtractor={(promotions) => promotions.id}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.notification}></TouchableOpacity>
+            <View style={styles.notification}>
+              <Text style={styles.notification_offert}>{item.offert}% Off</Text>
+              <Text style={styles.notification_offert_secondary}>
+                On everthing today
+              </Text>
+              <TouchableOpacity style={styles.notification_offert_button}>
+                <Text style={styles.notification_offert_button_text}>
+                  Get now
+                </Text>
+              </TouchableOpacity>
+            </View>
           )}
         ></FlatList>
       </View>
@@ -67,6 +78,12 @@ const styles = StyleSheet.create({
     height: "100%",
     // marginBottom: 50,
   },
+  text_promotion: {
+    paddingHorizontal: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 20,
+  },
   content_notifications: {
     width: "100%",
     flexDirection: "column",
@@ -80,6 +97,27 @@ const styles = StyleSheet.create({
     backgroundColor: "violet",
     borderRadius: 20,
     marginBottom: 20,
+    flexDirection: "column",
+    gap: 10,
+    justifyContent: "center",
+    paddingLeft: 20,
+  },
+  notification_offert: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  notification_offert_secondary: {
+    fontSize: 25,
+  },
+  notification_offert_button: {
+    backgroundColor: "black",
+    borderRadius: 15,
+    padding: 10,
+    width: 100,
+  },
+  notification_offert_button_text: {
+    color: "white",
+    fontSize: 18,
   },
 });
 

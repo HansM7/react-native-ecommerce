@@ -63,15 +63,15 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   icon: {
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
     // opacity: 0.7,
     tintColor: "white",
   },
   content_icon: {
-    backgroundColor: "black",
+    backgroundColor: "#495057",
     padding: 8,
-    borderRadius: 25,
+    borderRadius: 8,
   },
 });
 

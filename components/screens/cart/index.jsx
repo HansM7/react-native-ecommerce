@@ -104,7 +104,23 @@ function CartScreen() {
 
               {/* !item----------------------------------------- */}
             </View>
-            <View style={styles.detail_voucher}></View>
+            <View style={styles.detail_voucher}>
+              <View style={styles.detail_voucher_ammount}>
+                <Text style={styles.detail_text_items}>Total (3items):</Text>
+                <Text style={styles.detail_text_price}>$600.00</Text>
+              </View>
+              <View style={styles.detail_voucher_proccess}>
+                <Text style={styles.detail_voucher_proccess_text}>
+                  Proceded to checkout
+                </Text>
+                <TouchableOpacity style={styles.detail_voucher_proccess_icon_c}>
+                  <Image
+                    style={styles.detail_voucher_proccess_icon}
+                    source={require("../../../assets/icons/next.png")}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -204,8 +220,43 @@ const styles = StyleSheet.create({
   },
   detail_voucher: {
     width: "100%",
-    height: 50,
-    backgroundColor: "violet",
+    height: 100,
+    flexDirection: "column",
+    // backgroundColor: "violet",
+    gap: 16,
+  },
+  detail_voucher_ammount: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  detail_text_items: {
+    color: "gray",
+    fontSize: 18,
+  },
+  detail_text_price: {
+    fontWeight: "bold",
+    fontSize: 22,
+  },
+  detail_voucher_proccess: {
+    backgroundColor: "black",
+    padding: 12,
+    borderRadius: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  detail_voucher_proccess_text: {
+    fontSize: 18,
+    color: "white",
+  },
+  detail_voucher_proccess_icon_c: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    padding: 4,
+  },
+  detail_voucher_proccess_icon: {
+    width: 20,
+    height: 20,
   },
 });
 
