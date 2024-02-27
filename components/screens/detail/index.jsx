@@ -1,26 +1,28 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { initialDataProducts } from "../../data/data-ecommerce";
+import { useDispatch, useSelector } from "react-redux";
+import { addForAmmount, addProduct } from "../../../features/cart/cart.slice";
 
 function ProductSreen() {
-  const screen = "home";
+  const dispatch = useDispatch();
   const route = useRoute();
-
   const { product_id } = route.params;
 
+  const [inCart, setInCart] = useState(false);
+
+  const products = useSelector((state) => state.cart.value);
+
   const [product, setProduct] = useState(
-    initialDataProducts.filter((i) => i.id === product_id)
+    initialDataProducts.find((i) => i.id === product_id)
   );
 
-  const priceBase = 100;
   const [ammount, setAmmount] = useState(1);
-  function handleIncrement() {
-    setAmmount(ammount + 1);
-  }
-  function handleDecrement() {
-    if (ammount !== 1) setAmmount(ammount - 1);
-  }
+
+  const handleIncrement = () => setAmmount(ammount + 1);
+
+  const handleDecrement = () => (ammount !== 1 ? setAmmount(ammount - 1) : "");
 
   // sizes--------
   const sizes = ["S", "M", "L", "XL"];
@@ -33,20 +35,39 @@ function ProductSreen() {
 
   const colors = ["y", "b", "v", "bl"];
 
+  function handleSelect() {
+    const formartData = {
+      product,
+      ammount,
+    };
+
+    dispatch(addForAmmount(formartData));
+    setInCart(true);
+  }
+
+  function validateInCart() {
+    const res = products.find((item) => item.product.id === product_id);
+    if (res) setInCart(true);
+  }
+
+  useEffect(() => {
+    validateInCart();
+  }, [inCart]);
+
   return (
     <View style={styles.container_abs}>
       <View style={styles.container_product}>
         <Image
           source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyp3nqDGy3wgij0eEf0JjQiFL-3RqQ7jWSVsOvRFcEcQ&s",
+            uri: product.image,
           }}
           style={styles.image}
         />
         <View style={styles.container_detail}>
           <View style={styles.first_content}>
             <View style={styles.first_content_left}>
-              <Text style={styles.title}>Title product</Text>
-              <Text style={styles.description}>Description product</Text>
+              <Text style={styles.title}>{product.title}</Text>
+              <Text style={styles.description}>{product.description}</Text>
               <View style={styles.content_calification}>
                 <View style={styles.content_stars}>
                   <Text>⭐</Text>
@@ -117,18 +138,30 @@ function ProductSreen() {
               <View style={styles.final_price}>
                 <Text style={styles.price_title}>Total price</Text>
                 <Text style={styles.price_ammount}>
-                  ${priceBase * ammount}.00
+                  ${product.price * ammount}.00
                 </Text>
               </View>
               <View>
-                <TouchableOpacity style={styles.button_add}>
-                  <Image
-                    style={[{ width: 30, height: 20 }]}
-                    source={require("../../../assets/icons/icon_shop_white.png")}
-                    // style={styles.icon}
-                  />
-                  <Text style={styles.text_button_add}>Add to card</Text>
-                </TouchableOpacity>
+                {inCart ? (
+                  <TouchableOpacity
+                    style={[styles.button_add, { opacity: 0.7 }]}
+                    disabled
+                  >
+                    <Text style={styles.text_button_add}>In cart</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.button_add}
+                    onPress={() => handleSelect()}
+                  >
+                    <Image
+                      style={[{ width: 30, height: 20 }]}
+                      source={require("../../../assets/icons/icon_shop_white.png")}
+                      // style={styles.icon}
+                    />
+                    <Text style={styles.text_button_add}>Add to card</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </View>

@@ -1,4 +1,6 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import Counter from "../../counter";
+import { useSelector } from "react-redux";
 
 function ProfileScreen() {
   return (
@@ -17,8 +19,10 @@ function ProfileScreen() {
               <Text style={styles.profile_info_email}>hans@gmail.com</Text>
             </View>
           </View>
-          <View style={styles.item}></View>
-          <View style={styles.item}></View>
+          <View style={styles.item}>
+            <Counter></Counter>
+          </View>
+          {/* <View style={styles.item}></View> */}
         </View>
       </ScrollView>
     </View>
@@ -71,7 +75,9 @@ const styles = StyleSheet.create({
   },
   item: {
     width: "100%",
-    height: 500,
+    // height: 500,
+    paddingHorizontal: 50,
+    paddingVertical: 100,
     backgroundColor: "violet",
     borderRadius: 20,
   },

@@ -1,19 +1,33 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import FooterComponent from "../../elements/footer";
 import { useRoute } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct, removeProduct } from "../../../features/cart/cart.slice";
 
 function CartScreen() {
   const route = useRoute();
+  const dispatch = useDispatch();
   const screen = route.name;
 
   const [ammount, setAmmount] = useState(1);
 
   const items = [{}];
 
-  function handleIncrement() {}
-  function handleDecrement() {}
+  function handleIncrement(product) {
+    dispatch(addProduct(product));
+  }
+  function handleDecrement(id) {
+    dispatch(removeProduct(id));
+  }
+
+  const products = useSelector((state) => state.cart.value);
+
+  const priceTotal = products.reduce(
+    (acc, item) => acc + item.ammount * item.product.price,
+    0
+  );
 
   return (
     <View style={styles.container_abs}>
@@ -21,93 +35,55 @@ function CartScreen() {
         <View style={styles.content_card}>
           <Text style={styles.text_card}> My Cart</Text>
           <View style={styles.summary}>
-            <View style={styles.items_card}>
-              {/* item----------------------------------------- */}
-              <View style={styles.item_card}>
-                <Image
-                  source={{
-                    uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzB1e-FkP_iI3xR0fLGDz6SVbYPtIZ0sSrNK-GgsVl4A&s",
-                  }}
-                  style={styles.item_card_image}
-                />
-                <View style={styles.item_detail}>
-                  <Text style={styles.item_title_card}>First product</Text>
-                  <Text style={styles.item_title_secondary_card}>
-                    Dtail product selected bla
-                  </Text>
-                  <View style={styles.item_ammount_detail}>
-                    <Text style={styles.item_price_card}>$198.00</Text>
-                    <View style={styles.content_ammount}>
-                      <TouchableOpacity onPress={handleDecrement}>
-                        <Text style={styles.text_ammount}>-</Text>
-                      </TouchableOpacity>
-                      <Text style={styles.text_ammount}>{ammount}</Text>
-                      <TouchableOpacity onPress={handleIncrement}>
-                        <Text style={styles.text_ammount}>+</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.item_card}>
-                <Image
-                  source={{
-                    uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzB1e-FkP_iI3xR0fLGDz6SVbYPtIZ0sSrNK-GgsVl4A&s",
-                  }}
-                  style={styles.item_card_image}
-                />
-                <View style={styles.item_detail}>
-                  <Text style={styles.item_title_card}>First product</Text>
-                  <Text style={styles.item_title_secondary_card}>
-                    Dtail product selected bla
-                  </Text>
-                  <View style={styles.item_ammount_detail}>
-                    <Text style={styles.item_price_card}>$198.00</Text>
-                    <View style={styles.content_ammount}>
-                      <TouchableOpacity onPress={handleDecrement}>
-                        <Text style={styles.text_ammount}>-</Text>
-                      </TouchableOpacity>
-                      <Text style={styles.text_ammount}>{ammount}</Text>
-                      <TouchableOpacity onPress={handleIncrement}>
-                        <Text style={styles.text_ammount}>+</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.item_card}>
-                <Image
-                  source={{
-                    uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzB1e-FkP_iI3xR0fLGDz6SVbYPtIZ0sSrNK-GgsVl4A&s",
-                  }}
-                  style={styles.item_card_image}
-                />
-                <View style={styles.item_detail}>
-                  <Text style={styles.item_title_card}>First product</Text>
-                  <Text style={styles.item_title_secondary_card}>
-                    Dtail product selected bla
-                  </Text>
-                  <View style={styles.item_ammount_detail}>
-                    <Text style={styles.item_price_card}>$198.00</Text>
-                    <View style={styles.content_ammount}>
-                      <TouchableOpacity onPress={handleDecrement}>
-                        <Text style={styles.text_ammount}>-</Text>
-                      </TouchableOpacity>
-                      <Text style={styles.text_ammount}>{ammount}</Text>
-                      <TouchableOpacity onPress={handleIncrement}>
-                        <Text style={styles.text_ammount}>+</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </View>
+            {/* item----------------------------------------- */}
 
-              {/* !item----------------------------------------- */}
-            </View>
+            <FlatList
+              style={styles.items_card}
+              data={products}
+              keyExtractor={(products) => products.id}
+              renderItem={({ item }) => (
+                <View style={styles.item_card}>
+                  <Image
+                    source={{
+                      uri: item.product.image,
+                    }}
+                    style={styles.item_card_image}
+                  />
+                  <View style={styles.item_detail}>
+                    <Text style={styles.item_title_card}>
+                      {item.product.title}
+                    </Text>
+                    <Text style={styles.item_title_secondary_card}>
+                      {item.ammount * item.product.price}
+                    </Text>
+                    <View style={styles.item_ammount_detail}>
+                      <Text style={styles.item_price_card}>
+                        {item.product.price}
+                      </Text>
+                      <View style={styles.content_ammount}>
+                        <TouchableOpacity
+                          onPress={() => handleDecrement(item.product.id)}
+                        >
+                          <Text style={styles.text_ammount}>-</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.text_ammount}>{item.ammount}</Text>
+                        <TouchableOpacity onPress={() => handleIncrement(item)}>
+                          <Text style={styles.text_ammount}>+</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              )}
+            ></FlatList>
+
+            {/* !item----------------------------------------- */}
             <View style={styles.detail_voucher}>
               <View style={styles.detail_voucher_ammount}>
-                <Text style={styles.detail_text_items}>Total (3items):</Text>
-                <Text style={styles.detail_text_price}>$600.00</Text>
+                <Text style={styles.detail_text_items}>
+                  Total ({products.length} items):
+                </Text>
+                <Text style={styles.detail_text_price}>${priceTotal}</Text>
               </View>
               <View style={styles.detail_voucher_proccess}>
                 <Text style={styles.detail_voucher_proccess_text}>
@@ -140,10 +116,12 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     flexDirection: "column",
     minHeight: "100%",
+    backgroundColor: "white",
   },
   content_card: {
     marginTop: 20,
     height: "100%",
+    backgroundColor: "white",
   },
   text_card: {
     fontSize: 20,
@@ -155,21 +133,26 @@ const styles = StyleSheet.create({
     height: "90%",
     flexDirection: "column",
     justifyContent: "space-between",
+    backgroundColor: "white",
   },
 
   items_card: {
     marginTop: 16,
     flexDirection: "column",
     maxWidth: "100%",
-    gap: 25,
+    backgroundColor: "white",
+    // height: "100%",
   },
   item_card: {
     flexDirection: "row",
     justifyContent: "justify-content",
-    elevation: 20,
+    elevation: 2,
     backgroundColor: "white",
+    borderColor: "#e7e7e7",
+    borderWidth: 1,
     borderRadius: 10,
     padding: 10,
+    marginBottom: 10,
     // borderColor: "gray",
     // borderWidth: 1,
   },
