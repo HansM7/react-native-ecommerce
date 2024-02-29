@@ -1,12 +1,20 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { handleMenu } from "../../features/menu/menu.slice";
 
 function HeaderComponent() {
   const navigation = useNavigation();
 
   const route = useRoute();
 
+  const dispatch = useDispatch();
+
   const screen = route.name;
+
+  function handleAction() {
+    dispatch(handleMenu());
+  }
 
   if (screen !== "login") {
     return (
@@ -29,7 +37,7 @@ function HeaderComponent() {
         <View>
           <Text style={styles.text_screen}>{screen}</Text>
         </View>
-        <TouchableOpacity style={styles.content_icon}>
+        <TouchableOpacity style={styles.content_icon} onPress={handleAction}>
           <Image
             source={require("../../assets/icons/settings.png")}
             style={styles.icon}

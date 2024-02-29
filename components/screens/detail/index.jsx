@@ -13,10 +13,13 @@ function ProductSreen() {
   const [inCart, setInCart] = useState(false);
 
   const products = useSelector((state) => state.cart.value);
+  const product = useSelector((state) => state.product.value);
 
-  const [product, setProduct] = useState(
-    initialDataProducts.find((i) => i.id === product_id)
-  );
+  // console.log(productSelected);
+
+  // const [product, setProduct] = useState(
+  //   initialDataProducts.find((i) => i.id === product_id)
+  // );
 
   const [ammount, setAmmount] = useState(1);
 
