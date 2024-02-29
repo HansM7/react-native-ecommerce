@@ -54,11 +54,11 @@ function CartScreen() {
                       {item.product.title}
                     </Text>
                     <Text style={styles.item_title_secondary_card}>
-                      {item.ammount * item.product.price}
+                      {item.product.price}
                     </Text>
                     <View style={styles.item_ammount_detail}>
                       <Text style={styles.item_price_card}>
-                        {item.product.price}
+                        {item.ammount * item.product.price}
                       </Text>
                       <View style={styles.content_ammount}>
                         <TouchableOpacity

@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
 import {
   FlatList,
   Image,
@@ -7,13 +8,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { setProduct } from "../../../features/product/product.slice";
 
 function ProductList({ dataProduct }) {
   const navigation = useNavigation();
   const isTwoColumns = 2;
 
-  function handlePress(product_id) {
+  const dispatch = useDispatch();
+
+  function handlePress(product_id, product) {
     navigation.navigate("product", { product_id });
+    dispatch(setProduct(product));
   }
 
   return (
@@ -27,7 +32,7 @@ function ProductList({ dataProduct }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.card_product}
-            onPress={() => handlePress(item.id)}
+            onPress={() => handlePress(item.id, item)}
           >
             <Image
               source={{

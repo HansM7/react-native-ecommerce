@@ -3,6 +3,7 @@ import Counter from "../../counter";
 import { useSelector } from "react-redux";
 
 function ProfileScreen() {
+  const user = useSelector((state) => state.user.value);
   return (
     <View style={styles.container_abs}>
       <ScrollView>
@@ -15,8 +16,8 @@ function ProfileScreen() {
               style={styles.profile_info_image}
             />
             <View style={styles.profile_info_data}>
-              <Text style={styles.profile_info_name}>Hans Melchor</Text>
-              <Text style={styles.profile_info_email}>hans@gmail.com</Text>
+              <Text style={styles.profile_info_name}>{user.name}</Text>
+              <Text style={styles.profile_info_email}>{user.email}</Text>
             </View>
           </View>
           <View style={styles.item}>

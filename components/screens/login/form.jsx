@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   View,
   TextInput,
@@ -8,6 +9,8 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import { useGetUsersQuery } from "../../../services/auth.service";
+import { setUser } from "../../../features/user/user.slice";
 
 function Form() {
   const navigation = useNavigation();
@@ -17,11 +20,23 @@ function Form() {
     password: "",
   });
 
+  const { data, isLoading, error } = useGetUsersQuery();
+
+  const dispatch = useDispatch();
+
+  // fixme hacer la validacion por firebase con los reducers de redux
   function handleClick() {
-    if (dataForm.email === "admin@gmail.com" && dataForm.password === "admin") {
+    const login = data.find(
+      (item) =>
+        item.email === dataForm.email && item.password === dataForm.password
+    );
+
+    if (login) {
       navigation.replace("home");
+
+      // ok mandar el usuario a redux para que mantenga la informacion
+      dispatch(setUser(login));
     } else {
-      // lanzar error
       Alert.alert(
         "Error",
         "Ha ocurrido un error. Por favor, inténtalo de nuevo.",

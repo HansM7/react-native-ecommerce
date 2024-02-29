@@ -1,10 +1,12 @@
 import { useRoute } from "@react-navigation/native";
 import { StyleSheet, Text, View } from "react-native";
 import FooterComponent from "../../elements/footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { initialDataProducts } from "../../data/data-ecommerce";
 import ProductSearch from "./search";
 import ProductList from "./list";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetProductsByCategoryIdQuery } from "../../../services/shop.service";
 
 function ProductsScreen() {
   const route = useRoute();
@@ -13,9 +15,10 @@ function ProductsScreen() {
 
   const { category_id } = route.params;
 
-  const [dataProducts, setDataProducts] = useState(
-    initialDataProducts.filter((i) => i.category_id === category_id)
-  );
+  const { data, isLoading, error } =
+    useGetProductsByCategoryIdQuery(category_id);
+
+  const [dataProducts, setDataProducts] = useState([]);
 
   const [dataTemporal, setDataTemporal] = useState(dataProducts);
 
@@ -30,13 +33,17 @@ function ProductsScreen() {
     }
   }
 
+  useEffect(() => {
+    setDataProducts(data ? Object.values(data) : []);
+    setDataTemporal(data ? Object.values(data) : []);
+  }, [isLoading]);
+
   return (
     <View style={styles.container_abs}>
       <View style={styles.container_products}>
         <ProductSearch handleSearch={handleSearch}></ProductSearch>
         <ProductList dataProduct={dataTemporal}></ProductList>
       </View>
-      {/* <FooterComponent screen={screen}></FooterComponent> */}
     </View>
   );
 }
