@@ -17,6 +17,29 @@ export const shopApi = createApi({
       query: (category_id) =>
         `products.json?orderBy="category_id"&equalTo=${category_id}`,
     }),
+    // creando un post para las orders
+
+    postOrder: builder.mutation({
+      query: ({ ...order }) => ({
+        url: "orders.json",
+        method: "POST",
+        body: order,
+      }),
+    }),
+
+    findOrders: builder.query({
+      query: (email) => `orders.json?email=${email}&status=pending`,
+    }),
+
+    addAmountToOrder: builder.mutation({
+      query: ({ id, ammount }) => ({
+        url: `orders/${id}.json`,
+        method: "PATCH",
+        body: {
+          ammount,
+        },
+      }),
+    }),
   }),
 });
 
@@ -24,4 +47,7 @@ export const {
   useGetCategoriesQuery,
   useGetProductsQuery,
   useGetProductsByCategoryIdQuery,
+  useFindOrdersQuery,
+  usePostOrderMutation,
+  useAddAmountToOrderMutation,
 } = shopApi;

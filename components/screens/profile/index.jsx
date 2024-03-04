@@ -16,7 +16,7 @@ function ProfileScreen() {
               style={styles.profile_info_image}
             />
             <View style={styles.profile_info_data}>
-              <Text style={styles.profile_info_name}>{user.name}</Text>
+              <Text style={styles.profile_info_name}>{user.email}</Text>
               <Text style={styles.profile_info_email}>{user.email}</Text>
             </View>
           </View>

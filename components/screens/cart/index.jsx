@@ -2,21 +2,52 @@ import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import FooterComponent from "../../elements/footer";
 import { useRoute } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct, removeProduct } from "../../../features/cart/cart.slice";
+import {
+  addProduct,
+  removeProduct,
+  setNewDataToCart,
+} from "../../../features/cart/cart.slice";
+import {
+  useAddAmountToOrderMutation,
+  useFindOrdersQuery,
+} from "../../../services/shop.service";
+
+// todo cargaremos una sola vez la cart, guardaremos una variable en el storage, desde el detail add, modificaremos, si es modificado llama de nuevo a firebase 📊
 
 function CartScreen() {
   const route = useRoute();
   const dispatch = useDispatch();
-  const screen = route.name;
 
-  const [ammount, setAmmount] = useState(1);
+  const { data, error, isLoading } = useFindOrdersQuery("example@gmail.com");
 
-  const items = [{}];
+  // console.log(data);
+
+  const [triggerAddAmountToOrder, res] = useAddAmountToOrderMutation();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (data !== null) {
+        const transformedData = Object.keys(data).map((key) => ({
+          id: key,
+          data: data[key],
+        }));
+        dispatch(setNewDataToCart(transformedData));
+      }
+    }
+  }, [data]);
 
   function handleIncrement(product) {
-    dispatch(addProduct(product));
+    try {
+      triggerAddAmountToOrder({
+        id: product.id,
+        ammount: product.data.ammount + 1,
+      });
+      dispatch(addProduct(product));
+    } catch (error) {
+      console.log(error);
+    }
   }
   function handleDecrement(id) {
     dispatch(removeProduct(id));
@@ -25,7 +56,7 @@ function CartScreen() {
   const products = useSelector((state) => state.cart.value);
 
   const priceTotal = products.reduce(
-    (acc, item) => acc + item.ammount * item.product.price,
+    (acc, item) => acc + item.data.ammount * item.data.product.price,
     0
   );
 
@@ -37,45 +68,55 @@ function CartScreen() {
           <View style={styles.summary}>
             {/* item----------------------------------------- */}
 
-            <FlatList
-              style={styles.items_card}
-              data={products}
-              keyExtractor={(products) => products.id}
-              renderItem={({ item }) => (
-                <View style={styles.item_card}>
-                  <Image
-                    source={{
-                      uri: item.product.image,
-                    }}
-                    style={styles.item_card_image}
-                  />
-                  <View style={styles.item_detail}>
-                    <Text style={styles.item_title_card}>
-                      {item.product.title}
-                    </Text>
-                    <Text style={styles.item_title_secondary_card}>
-                      {item.product.price}
-                    </Text>
-                    <View style={styles.item_ammount_detail}>
-                      <Text style={styles.item_price_card}>
-                        {item.ammount * item.product.price}
+            {isLoading ? (
+              <Text>"Loading..."</Text>
+            ) : (
+              <FlatList
+                style={styles.items_card}
+                data={products}
+                keyExtractor={(products) => products.id}
+                renderItem={({ item }) => (
+                  <View style={styles.item_card}>
+                    <Image
+                      source={{
+                        uri: item.data.product.image,
+                      }}
+                      style={styles.item_card_image}
+                    />
+                    <View style={styles.item_detail}>
+                      <Text style={styles.item_title_card}>
+                        {item.data.product.title}
                       </Text>
-                      <View style={styles.content_ammount}>
-                        <TouchableOpacity
-                          onPress={() => handleDecrement(item.product.id)}
-                        >
-                          <Text style={styles.text_ammount}>-</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.text_ammount}>{item.ammount}</Text>
-                        <TouchableOpacity onPress={() => handleIncrement(item)}>
-                          <Text style={styles.text_ammount}>+</Text>
-                        </TouchableOpacity>
+                      <Text style={styles.item_title_secondary_card}>
+                        {item.data.product.price}
+                      </Text>
+                      <View style={styles.item_ammount_detail}>
+                        <Text style={styles.item_price_card}>
+                          {item.data.ammount * item.data.product.price}
+                        </Text>
+                        <View style={styles.content_ammount}>
+                          <TouchableOpacity
+                            onPress={() =>
+                              handleDecrement(item.data.product.id)
+                            }
+                          >
+                            <Text style={styles.text_ammount}>-</Text>
+                          </TouchableOpacity>
+                          <Text style={styles.text_ammount}>
+                            {item.data.ammount}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() => handleIncrement(item)}
+                          >
+                            <Text style={styles.text_ammount}>+</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              )}
-            ></FlatList>
+                )}
+              ></FlatList>
+            )}
 
             {/* !item----------------------------------------- */}
             <View style={styles.detail_voucher}>

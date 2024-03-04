@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   View,
@@ -9,57 +9,60 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { setUser } from "../../../features/user/user.slice";
-import { useLoginMutation } from "../../../services/auth.service";
+import { useSignUpMutation } from "../../../services/auth.service";
 
-function Form() {
+// todo no borrar importacion
+import { setUser } from "../../../features/user/user.slice";
+import { signupSchema } from "../../../models/signup.schema";
+
+function FormSignup() {
   const navigation = useNavigation();
 
   const [dataForm, setDataForm] = useState({
+    name: "",
     email: "",
     password: "",
+    confirm_password: "",
   });
 
-  const [triggerLogin, result] = useLoginMutation();
+  const [triggerSignup, result] = useSignUpMutation();
 
   const dispatch = useDispatch();
 
   // fixme hacer la validacion por firebase con los reducers de redux
-  function handleClick() {
-    triggerLogin(dataForm);
-  }
+  async function handleClick() {
+    try {
+      signupSchema.validateSync(dataForm);
+      await triggerSignup({
+        email: dataForm.email,
+        password: dataForm.password,
+      });
 
-  useEffect(() => {
-    validation();
-  }, [result.isLoading]);
+      dispatch(setUser({ email: dataForm.email }));
 
-  function validation() {
-    if (result.data) {
-      dispatch(setUser({ email: result.data.email }));
-      // ok aqui ya recibo el token con result.data.idToken
-      // todo las demas validaciones que ayuden al login
       navigation.replace("home");
-    }
-    if (result.error) {
+    } catch (error) {
       Alert.alert(
         "Error",
-        "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+        "Ha ocurrido un error. Por favor, verifique los camppos",
         [{ text: "OK" }]
       );
     }
   }
 
-  function redirectSignup() {
-    navigation.navigate("signup");
-  }
-
   return (
     <View style={styles.container_form}>
+      <View style={styles.form_group}>
+        <Text style={styles.label_text}>Name</Text>
+        <TextInput
+          onChangeText={(value) => setDataForm({ ...dataForm, name: value })}
+          style={styles.input_text}
+        ></TextInput>
+      </View>
       <View style={styles.form_group}>
         <Text style={styles.label_text}>Email</Text>
         <TextInput
           onChangeText={(value) => setDataForm({ ...dataForm, email: value })}
-          defaultValue="admin@gmail.com"
           keyboardType="email-address"
           style={styles.input_text}
         ></TextInput>
@@ -74,16 +77,20 @@ function Form() {
           style={styles.input_text}
         ></TextInput>
       </View>
+
+      <View style={styles.form_group}>
+        <Text style={styles.label_text}>Confirm Password</Text>
+        <TextInput
+          onChangeText={(value) =>
+            setDataForm({ ...dataForm, confirm_password: value })
+          }
+          secureTextEntry={true}
+          style={styles.input_text}
+        ></TextInput>
+      </View>
       <View style={styles.container_button}>
         <TouchableOpacity style={styles.button_login} onPress={handleClick}>
-          <Text style={styles.text_button_login}>
-            {result.isLoading ? "Cargando..." : "Login"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.container_button_signup}>
-        <TouchableOpacity style={styles.button_login} onPress={redirectSignup}>
-          <Text style={styles.text_button_login}>Signup</Text>
+          <Text style={styles.text_button_login}>Login</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -125,10 +132,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "100%",
   },
-  container_button_signup: {
-    marginTop: 8,
-    width: "100%",
-  },
   button_login: {
     backgroundColor: "#3d3d3d",
     borderRadius: 15,
@@ -142,4 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Form;
+export default FormSignup;

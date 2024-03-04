@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { initialDataProducts } from "../../data/data-ecommerce";
 import { useDispatch, useSelector } from "react-redux";
 import { addForAmmount, addProduct } from "../../../features/cart/cart.slice";
+import { usePostOrderMutation } from "../../../services/shop.service";
+import uuid from "react-native-uuid";
 
 function ProductSreen() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
   const route = useRoute();
   const { product_id } = route.params;
 
@@ -15,16 +18,9 @@ function ProductSreen() {
   const products = useSelector((state) => state.cart.value);
   const product = useSelector((state) => state.product.value);
 
-  // console.log(productSelected);
-
-  // const [product, setProduct] = useState(
-  //   initialDataProducts.find((i) => i.id === product_id)
-  // );
-
   const [ammount, setAmmount] = useState(1);
 
   const handleIncrement = () => setAmmount(ammount + 1);
-
   const handleDecrement = () => (ammount !== 1 ? setAmmount(ammount - 1) : "");
 
   // sizes--------
@@ -38,24 +34,62 @@ function ProductSreen() {
 
   const colors = ["y", "b", "v", "bl"];
 
+  const [triggerAdd, res] = usePostOrderMutation();
+
   function handleSelect() {
-    const formartData = {
+    try {
+      const formartData = {
+        product,
+        ammount,
+      };
+
+      addProductToCartFirebase();
+    } catch (error) {}
+  }
+
+  function addProductToCartFirebase() {
+    const newUuid = uuid.v4();
+
+    const formarDataFirebase = {
+      id: newUuid,
+      email: user.email,
       product,
       ammount,
+      status: "pending",
     };
-
-    dispatch(addForAmmount(formartData));
-    setInCart(true);
+    triggerAdd(formarDataFirebase);
   }
+
+  useEffect(() => {
+    if (res.data?.name) {
+      // console.log(res);
+      const x = { id: res.data.name, data: res.data.originalArgs };
+      // console.log(x);
+      dispatch(addForAmmount({ id: res.data.name, data: res.originalArgs }));
+      setInCart(true);
+    }
+  }, [res]);
 
   function validateInCart() {
-    const res = products.find((item) => item.product.id === product_id);
-    if (res) setInCart(true);
+    if (product.length) {
+      const res = products.find((item) => item.data.product.id === product_id);
+      if (res) setInCart(true);
+    }
   }
+
+  // console.log(res);
 
   useEffect(() => {
     validateInCart();
   }, [inCart]);
+
+  //todo para hacer un post, pendiente por implementar
+
+  const [triggerPost, result] = usePostOrderMutation();
+
+  function handlePressAdd() {
+    triggerPost({}); // todas las propiedades que deberian ir en las orders
+  }
 
   return (
     <View style={styles.container_abs}>

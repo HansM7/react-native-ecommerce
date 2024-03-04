@@ -1,12 +1,15 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Banner from "./banner";
 import Form from "./form";
+
+import { useNavigation } from "@react-navigation/native";
 
 function LoginScreen() {
   return (
     <View style={styles.container_login}>
       <Banner></Banner>
+
       <Form></Form>
     </View>
   );

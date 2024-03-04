@@ -7,13 +7,39 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useFindOrdersQuery } from "../../../services/shop.service";
+
+import { useDispatch } from "react-redux";
+
+import { useEffect } from "react";
+import { setNewDataToCart } from "../../../features/cart/cart.slice";
 
 function CategoryList({ dataCategory, setPage }) {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   function handlePress(category_id) {
     navigation.navigate("products", { category_id });
   }
+
+  // fixme por ahora lo dejo aqui
+
+  const { data, isLoading, error } = useFindOrdersQuery("example@gmail.com");
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (data !== null) {
+        const transformedData = Object.keys(data).map((key) => ({
+          id: key,
+          data: data[key],
+        }));
+        dispatch(setNewDataToCart(transformedData));
+      }
+    }
+  }, [isLoading]);
+
+  console.log(data);
+
   const isTwoColumns = 2;
   return (
     <View style={styles.container_list}>

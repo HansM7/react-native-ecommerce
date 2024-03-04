@@ -9,6 +9,7 @@ import ProductSreen from "../components/screens/detail";
 import HeaderComponent from "../components/header";
 import ProfileScreen from "../components/screens/profile";
 import TabNavigation from "./tab_navigation";
+import SignupScreeen from "../components/screens/signup";
 
 const stack = createStackNavigator();
 
@@ -38,6 +39,8 @@ function Routing() {
         <stack.Screen name="products" component={ProductsScreen}></stack.Screen>
 
         <stack.Screen name="product" component={ProductSreen}></stack.Screen>
+
+        <stack.Screen name="signup" component={SignupScreeen}></stack.Screen>
       </stack.Navigator>
     </NavigationContainer>
   );

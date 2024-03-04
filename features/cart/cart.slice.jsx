@@ -12,7 +12,7 @@ export const cartSlice = createSlice({
         (item) => item.product.id === product.product.id
       );
       if (index !== -1) {
-        state.value[index].ammount++;
+        state.value[index].data.ammount++;
       } else {
         state.value.push({
           product,
@@ -23,11 +23,7 @@ export const cartSlice = createSlice({
     },
     addForAmmount: (state, action) => {
       const { product, ammount } = action.payload;
-      state.value.push({
-        product,
-        id: state.value.length + 1,
-        ammount,
-      });
+      state.value.push(action.payload);
     },
     removeProduct: (state, action) => {
       const id = action.payload;
@@ -40,9 +36,37 @@ export const cartSlice = createSlice({
         }
       }
     },
+
+    setNewDataToCart: (state, action) => {
+      state.value = action.payload;
+    },
   },
 });
 
-export const { addProduct, removeProduct, addForAmmount } = cartSlice.actions;
+export const { addProduct, removeProduct, addForAmmount, setNewDataToCart } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
+
+// [
+//   {
+//     data: {
+//       ammount: 4,
+//       email: "example@gmail.com",
+//       id: "19349ccc-2d61-4581-9642-1c477f393302",
+//       product: {},
+//       status: "pending"
+//     },
+//     id: "-Ns5fN6QafX_1SEJG2OC"
+//   },
+//   {
+//     data: {
+//       ammount: 1,
+//       email: "example@gmail.com",
+//       id: "93dfd97f-6444-4394-9900-33d6bcf13300",
+//       product: {},
+//       status: "pending"
+//     },
+//     id: "-Ns5faQZbkC6M-HztT0m"
+//   }
+// ]

@@ -19,7 +19,9 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(shopApi.middleware, authApi.middleware),
+    getDefaultMiddleware()
+      .concat(shopApi.middleware)
+      .concat(authApi.middleware),
 });
 
 setupListeners(configureStore.dispatch);
