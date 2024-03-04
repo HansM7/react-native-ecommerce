@@ -62,34 +62,21 @@ function ProductSreen() {
 
   useEffect(() => {
     if (res.data?.name) {
-      // console.log(res);
-      const x = { id: res.data.name, data: res.data.originalArgs };
-      // console.log(x);
       dispatch(addForAmmount({ id: res.data.name, data: res.originalArgs }));
       setInCart(true);
     }
   }, [res]);
 
   function validateInCart() {
-    if (product.length) {
+    if (products.length) {
       const res = products.find((item) => item.data.product.id === product_id);
       if (res) setInCart(true);
     }
   }
 
-  // console.log(res);
-
   useEffect(() => {
     validateInCart();
   }, [inCart]);
-
-  //todo para hacer un post, pendiente por implementar
-
-  const [triggerPost, result] = usePostOrderMutation();
-
-  function handlePressAdd() {
-    triggerPost({}); // todas las propiedades que deberian ir en las orders
-  }
 
   return (
     <View style={styles.container_abs}>

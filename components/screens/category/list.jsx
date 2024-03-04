@@ -38,7 +38,7 @@ function CategoryList({ dataCategory, setPage }) {
     }
   }, [isLoading]);
 
-  console.log(data);
+  // console.log(data);
 
   const isTwoColumns = 2;
   return (

@@ -40,6 +40,23 @@ export const shopApi = createApi({
         },
       }),
     }),
+
+    reduceAmmountToOrder: builder.mutation({
+      query: ({ id, ammount }) => ({
+        url: `orders/${id}.json`,
+        method: "PATCH",
+        body: {
+          ammount,
+        },
+      }),
+    }),
+
+    deleteOrder: builder.mutation({
+      query: (id) => ({
+        url: `orders/${id}.json`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -50,4 +67,6 @@ export const {
   useFindOrdersQuery,
   usePostOrderMutation,
   useAddAmountToOrderMutation,
+  useReduceAmmountToOrderMutation,
+  useDeleteOrderMutation,
 } = shopApi;

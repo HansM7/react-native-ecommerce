@@ -11,7 +11,9 @@ import {
 } from "../../../features/cart/cart.slice";
 import {
   useAddAmountToOrderMutation,
+  useDeleteOrderMutation,
   useFindOrdersQuery,
+  useReduceAmmountToOrderMutation,
 } from "../../../services/shop.service";
 
 // todo cargaremos una sola vez la cart, guardaremos una variable en el storage, desde el detail add, modificaremos, si es modificado llama de nuevo a firebase 📊
@@ -22,9 +24,12 @@ function CartScreen() {
 
   const { data, error, isLoading } = useFindOrdersQuery("example@gmail.com");
 
-  // console.log(data);
-
   const [triggerAddAmountToOrder, res] = useAddAmountToOrderMutation();
+
+  const [triggerReduceAmmountToRoder, resReduce] =
+    useReduceAmmountToOrderMutation();
+
+  const [triggerDeleteOrder, resDelete] = useDeleteOrderMutation();
 
   useEffect(() => {
     if (!isLoading) {
@@ -38,19 +43,32 @@ function CartScreen() {
     }
   }, [data]);
 
-  function handleIncrement(product) {
+  function handleIncrement(item) {
     try {
       triggerAddAmountToOrder({
-        id: product.id,
-        ammount: product.data.ammount + 1,
+        id: item.id,
+        ammount: item.data.ammount + 1,
       });
-      dispatch(addProduct(product));
+      dispatch(addProduct(item));
     } catch (error) {
       console.log(error);
     }
   }
-  function handleDecrement(id) {
-    dispatch(removeProduct(id));
+
+  function handleDecrement(item) {
+    try {
+      if (item.data.ammount === 1) {
+        triggerDeleteOrder(item.id);
+      } else {
+        triggerReduceAmmountToRoder({
+          id: item.id,
+          ammount: item.data.ammount - 1,
+        });
+      }
+      dispatch(removeProduct(item));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const products = useSelector((state) => state.cart.value);
@@ -96,9 +114,7 @@ function CartScreen() {
                         </Text>
                         <View style={styles.content_ammount}>
                           <TouchableOpacity
-                            onPress={() =>
-                              handleDecrement(item.data.product.id)
-                            }
+                            onPress={() => handleDecrement(item)}
                           >
                             <Text style={styles.text_ammount}>-</Text>
                           </TouchableOpacity>
