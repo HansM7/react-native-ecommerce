@@ -1,3 +1,5 @@
-export const api_key = "AIzaSyDHuf0rtxebuRn4dv4NMNnSM46hO-FsKgw";
+const { EXPO_PUBLIC_API_KEY, EXPO_PUBLIC_BASE_AUTH_URL } = process.env;
 
-export const base_auth_url = "https://identitytoolkit.googleapis.com/v1/";
+export const api_key = EXPO_PUBLIC_API_KEY;
+
+export const base_auth_url = EXPO_PUBLIC_BASE_AUTH_URL;

@@ -22,7 +22,9 @@ function CartScreen() {
   const route = useRoute();
   const dispatch = useDispatch();
 
-  const { data, error, isLoading } = useFindOrdersQuery("example@gmail.com");
+  const user = useSelector((state) => state.user.value);
+
+  const { data, error, isLoading } = useFindOrdersQuery(user.email);
 
   const [triggerAddAmountToOrder, res] = useAddAmountToOrderMutation();
 
@@ -31,9 +33,11 @@ function CartScreen() {
 
   const [triggerDeleteOrder, resDelete] = useDeleteOrderMutation();
 
+  console.log(data);
+
   useEffect(() => {
     if (!isLoading) {
-      if (data !== null) {
+      if ((data !== null) & data) {
         const transformedData = Object.keys(data).map((key) => ({
           id: key,
           data: data[key],

@@ -18,7 +18,7 @@ function CategoryScreen() {
   const [dataCategory, setdataCategory] = useState([]);
   const [dataTemporal, setDataTemporal] = useState(dataCategory);
 
-  // ok:  Aqui el filtro ya no requiere de llamar a firebase
+  // !  Aqui el filtro ya no requiere de llamar a firebase
   function handleSearch(word) {
     if (word === "") {
       setDataTemporal(dataCategory);

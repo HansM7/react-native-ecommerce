@@ -28,7 +28,7 @@ export const shopApi = createApi({
     }),
 
     findOrders: builder.query({
-      query: (email) => `orders.json?email=${email}&status=pending`,
+      query: (email) => `orders.json?orderBy="email"&equalTo="${email}"`,
     }),
 
     addAmountToOrder: builder.mutation({

@@ -1,1 +1,3 @@
-export const url_firestore= "https://test-dev-d2ce9-default-rtdb.firebaseio.com/"
+const { EXPO_PUBLIC_URL_FIREBASE } = process.env;
+
+export const url_firestore = EXPO_PUBLIC_URL_FIREBASE;

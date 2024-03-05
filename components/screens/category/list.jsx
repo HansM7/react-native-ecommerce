@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useFindOrdersQuery } from "../../../services/shop.service";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useEffect } from "react";
 import { setNewDataToCart } from "../../../features/cart/cart.slice";
@@ -22,18 +22,25 @@ function CategoryList({ dataCategory, setPage }) {
     navigation.navigate("products", { category_id });
   }
 
-  // fixme por ahora lo dejo aqui
+  const user = useSelector((state) => state.user.value);
 
-  const { data, isLoading, error } = useFindOrdersQuery("example@gmail.com");
+  // ! por ahora lo dejo aqui
+
+  const { data, isLoading, error } = useFindOrdersQuery(user.email);
+
+  console.log(error);
 
   useEffect(() => {
+    console.log(data);
     if (!isLoading) {
-      if (data !== null) {
+      if (data !== null && data) {
         const transformedData = Object.keys(data).map((key) => ({
           id: key,
           data: data[key],
         }));
         dispatch(setNewDataToCart(transformedData));
+      } else {
+        console.log("error!!!!!!!!!");
       }
     }
   }, [isLoading]);
