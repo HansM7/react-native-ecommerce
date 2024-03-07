@@ -33,8 +33,6 @@ function CartScreen() {
 
   const [triggerDeleteOrder, resDelete] = useDeleteOrderMutation();
 
-  console.log(data);
-
   useEffect(() => {
     if (!isLoading) {
       if ((data !== null) & data) {
