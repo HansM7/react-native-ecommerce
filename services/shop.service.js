@@ -57,6 +57,20 @@ export const shopApi = createApi({
         method: "DELETE",
       }),
     }),
+
+    // adding profiles image
+    getProfileImage: builder.query({
+      query: (localId) => `profileImages/${localId}.json`,
+    }),
+    putProfileImage: builder.mutation({
+      query: ({ localId, image }) => ({
+        url: `profileImages/${localId}.json`,
+        method: "PUT",
+        body: {
+          image: image,
+        },
+      }),
+    }),
   }),
 });
 
@@ -69,4 +83,6 @@ export const {
   useAddAmountToOrderMutation,
   useReduceAmmountToOrderMutation,
   useDeleteOrderMutation,
+  useGetProfileImageQuery,
+  usePutProfileImageMutation,
 } = shopApi;

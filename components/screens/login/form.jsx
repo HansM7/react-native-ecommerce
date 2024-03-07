@@ -35,7 +35,9 @@ function Form() {
 
   function validation() {
     if (result.data) {
-      dispatch(setUser({ email: result.data.email }));
+      dispatch(
+        setUser({ email: result.data.email, localId: result.data.localId })
+      );
       // ok aqui ya recibo el token con result.data.idToken
       // todo las demas validaciones que ayuden al login
       navigation.replace("home");

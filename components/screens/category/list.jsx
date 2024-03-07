@@ -28,10 +28,7 @@ function CategoryList({ dataCategory, setPage }) {
 
   const { data, isLoading, error } = useFindOrdersQuery(user.email);
 
-  console.log(error);
-
   useEffect(() => {
-    console.log(data);
     if (!isLoading) {
       if (data !== null && data) {
         const transformedData = Object.keys(data).map((key) => ({
@@ -44,8 +41,6 @@ function CategoryList({ dataCategory, setPage }) {
       }
     }
   }, [isLoading]);
-
-  // console.log(data);
 
   const isTwoColumns = 2;
   return (
