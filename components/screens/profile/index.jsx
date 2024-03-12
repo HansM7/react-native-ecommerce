@@ -16,8 +16,10 @@ import {
   useGetProfileImageQuery,
   usePutProfileImageMutation,
 } from "../../../services/shop.service";
+import Location from "./location";
 
 function ProfileScreen() {
+  // todo section settings camera -----------------------------------------------------
   const user = useSelector((state) => state.user.value);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -70,6 +72,8 @@ function ProfileScreen() {
     setImageTemporal(null);
     setModalVisible(!modalVisible);
   }
+
+  // todo end section settings camera -----------------------------------------------------
 
   return (
     <View style={styles.container_abs}>
@@ -186,8 +190,18 @@ function ProfileScreen() {
                 <Text style={styles.profile_info_email}>{user.email}</Text>
               </View>
             </View>
-            <View style={styles.item}>{/* <Counter></Counter> */}</View>
-            {/* <View style={styles.item}></View> */}
+            {/* <View style={styles.item}><Counter></Counter></View> */}
+            <View style={styles.separator}>
+              <Text style={styles.separator_text}>Location user</Text>
+            </View>
+            <View style={styles.item}>
+              <Location></Location>
+            </View>
+            <View>
+              <TouchableOpacity style={styles.button_c_ubication}>
+                <Text style={styles.button_c_text}>change ubication</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </ScrollView>
@@ -267,6 +281,24 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  separator: {
+    width: "100%",
+    marginTop: 20,
+  },
+  separator_text: {
+    fontSize: 18,
+  },
+  button_c_ubication: {
+    width: "100%",
+    paddingVertical: 8,
+    backgroundColor: "black",
+    borderRadius: 8,
+  },
+  button_c_text: {
+    color: "white",
+    fontSize: 18,
     textAlign: "center",
   },
 });
