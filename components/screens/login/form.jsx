@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { setUser } from "../../../features/user/user.slice";
 import { useLoginMutation } from "../../../services/auth.service";
+import { insertSession } from "../../../db";
 
 function Form() {
   const navigation = useNavigation();
@@ -35,11 +36,20 @@ function Form() {
 
   function validation() {
     if (result.data) {
+      // * guardando en localstorage
       dispatch(
         setUser({ email: result.data.email, localId: result.data.localId })
       );
       // ok aqui ya recibo el token con result.data.idToken
-      // todo las demas validaciones que ayuden al login
+      // * las demas validaciones que ayuden al login
+      // * insercion para sqlite
+      insertSession(result.data.email, result.data.localId, result.data.token)
+        .then((resut) => {
+          // console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       navigation.replace("home");
     }
     if (result.error) {

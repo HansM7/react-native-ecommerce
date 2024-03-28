@@ -37,6 +37,9 @@ export const cartSlice = createSlice({
     setNewDataToCart: (state, action) => {
       state.value = action.payload;
     },
+    reset: (state) => {
+      state.value = [];
+    },
   },
 });
 

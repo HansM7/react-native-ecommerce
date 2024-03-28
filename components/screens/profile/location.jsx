@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 
-// todo this section is pending.
+// * this section not implemented
 
 function Location() {
   const [location, setLocation] = useState({

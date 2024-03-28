@@ -17,8 +17,11 @@ import {
   usePutProfileImageMutation,
 } from "../../../services/shop.service";
 import Location from "./location";
+import { deleteSession } from "../../../db";
+import { useNavigation } from "@react-navigation/native";
 
 function ProfileScreen() {
+  const navigation = useNavigation();
   // todo section settings camera -----------------------------------------------------
   const user = useSelector((state) => state.user.value);
   const [modalVisible, setModalVisible] = useState(false);
@@ -74,6 +77,11 @@ function ProfileScreen() {
   }
 
   // todo end section settings camera -----------------------------------------------------
+
+  function handleLogout() {
+    deleteSession().then((res) => {});
+    navigation.replace("login");
+  }
 
   return (
     <View style={styles.container_abs}>
@@ -192,14 +200,25 @@ function ProfileScreen() {
             </View>
             {/* <View style={styles.item}><Counter></Counter></View> */}
             <View style={styles.separator}>
-              <Text style={styles.separator_text}>Location user</Text>
+              {/* <Text style={styles.separator_text}>Location user</Text> */}
             </View>
-            <View style={styles.item}>
+            {/* <View style={styles.item}>
               <Location></Location>
             </View>
             <View>
               <TouchableOpacity style={styles.button_c_ubication}>
                 <Text style={styles.button_c_text}>change ubication</Text>
+              </TouchableOpacity>
+            </View> */}
+
+            <View style={styles.item}></View>
+
+            <View style={styles.content_logout}>
+              <TouchableOpacity
+                onPress={handleLogout}
+                style={styles.button_logout}
+              >
+                <Text style={styles.button_c_text}>Logout</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -268,7 +287,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 20,
   },
-
   button: {
     width: "100%",
     backgroundColor: "black",
@@ -276,7 +294,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 8,
   },
-
   button_text: {
     color: "white",
     fontSize: 18,
@@ -300,6 +317,16 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     textAlign: "center",
+  },
+  content_logout: {
+    marginTop: 20,
+    width: "100%",
+  },
+  button_logout: {
+    width: "100%",
+    paddingVertical: 8,
+    backgroundColor: "black",
+    borderRadius: 8,
   },
 });
 
